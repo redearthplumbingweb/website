@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+:root {
+  --background: #faf7f4;
+  --foreground: #2a2420;
+  --muted: #6b5e56;
+  --surface: #f5ede6;
+  --surface-dark: #2a2420;
+  --primary: #a62d24;
+  --primary-dark: #852019;
+  --accent: #c9453a;
+  --border: #e8ddd4;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-surface-dark: var(--surface-dark);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --font-sans: var(--font-source-sans);
+  --font-display: var(--font-playfair);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-source-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--primary) 20%, white);
+}
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes gradient-angle-spin {
+  to {
+    --gradient-angle: 360deg;
+  }
+}
+
+@keyframes hero-photo-in {
+  from {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-logo-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes hero-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-photo {
+  animation: hero-photo-in 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-overlay {
+  animation: hero-overlay-in 1.2s ease-out 0.15s both;
+}
+
+.hero-item {
+  opacity: 0;
+  animation: hero-rise-in 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-item-logo {
+  animation-name: hero-logo-in;
+  animation-duration: 1s;
+  animation-delay: 0.4s;
+}
+
+.hero-item-eyebrow {
+  animation-delay: 0.62s;
+}
+
+.hero-item-headline {
+  animation-delay: 0.78s;
+}
+
+.hero-item-actions {
+  animation-delay: 0.96s;
+}
+
+.gradient-phone-border {
+  --gradient-angle: 0deg;
+  background: conic-gradient(
+    from var(--gradient-angle),
+    #ffffff,
+    var(--accent),
+    var(--primary),
+    #ffffff,
+    var(--accent),
+    #ffffff
+  );
+  animation: gradient-angle-spin 3s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-phone-border,
+  .hero-photo,
+  .hero-overlay,
+  .hero-item {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
