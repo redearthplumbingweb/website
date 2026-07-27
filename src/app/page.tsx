@@ -17,8 +17,8 @@ export default function Home() {
     <>
       <Hero />
       <About />
-      <Services />
-      <Gallery />
+      <Services limit={6} showViewAll />
+      <Gallery limit={6} showViewAll />
       <WhyChooseUs />
       <Contact />
     </>

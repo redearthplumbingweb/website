@@ -41,9 +41,9 @@ export const siteConfig = {
   description:
     "Red Earth Plumbing is a locally owned plumbing and gas fitting business with over 20 years of experience, serving Batemans Bay and the surrounding South Coast. From plumbing and gas on new home builds to renovations, maintenance, and emergency call-outs — honest, professional service across the Eurobodalla region.",
   maps: {
-    link: "https://www.google.com/maps/search/?api=1&query=11+Canning+Crescent,+Batemans+Bay+NSW+2536",
+    link: "https://www.google.com/maps/search/?api=1&query=Batemans+Bay+NSW",
     embed:
-      "https://maps.google.com/maps?q=11+Canning+Crescent,+Batemans+Bay+NSW+2536,+Australia&hl=en&z=15&output=embed",
+      "https://maps.google.com/maps?q=Batemans+Bay,+NSW,+Australia&hl=en&z=13&output=embed",
   },
 } as const;
 
@@ -63,10 +63,10 @@ export const templateImages = {
 } as const;
 
 export const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/#about" },
+  { label: "Services", href: "/services" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Contact", href: "/#contact" },
 ] as const;
 
 export const services = [
