@@ -20,12 +20,12 @@ export function Hero() {
 
       <div className="relative z-10 mx-auto flex min-h-[82vh] max-w-6xl flex-col justify-center px-6 py-24 lg:px-8">
         <Image
-          src="/hero-banner-logo.png"
+          src="/redearth-plumbing-logo-whitebackground.png"
           alt={siteConfig.name}
-          width={1600}
-          height={400}
+          width={720}
+          height={280}
           priority
-          className="hero-item hero-item-logo mb-8 w-full max-w-xl rounded-2xl sm:max-w-2xl lg:max-w-3xl"
+          className="hero-item hero-item-logo mb-8 w-full max-w-xs rounded-2xl sm:max-w-sm lg:max-w-md"
         />
 
         <p className="hero-item hero-item-eyebrow mb-4 max-w-full text-xs font-semibold uppercase tracking-[0.15em] text-accent sm:text-sm sm:tracking-[0.3em]">

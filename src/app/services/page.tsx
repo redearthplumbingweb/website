@@ -5,7 +5,7 @@ import { PageHero } from "@/components/PageHero";
 import { Services } from "@/components/Services";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
 import { GradientPhoneLink } from "@/components/GradientPhoneLink";
-import { newImages, siteConfig } from "@/lib/site-data";
+import { clientImages, siteConfig } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Plumbing & Gas Fitting Services",
@@ -21,8 +21,8 @@ export default function ServicesPage() {
         eyebrow="Services"
         title="Plumbing & gas fitting done properly"
         description="From new home builds to emergency call-outs — licensed, local service across Batemans Bay and the South Coast."
-        imageSrc={newImages.excavatorDigging}
-        imageAlt="Mini excavator digging trenches for new home plumbing installation"
+        imageSrc={clientImages.siteRedEarthTruck}
+        imageAlt="Red Earth Plumbing ute on an active construction site"
       />
       <Services />
       <WhyChooseUs />

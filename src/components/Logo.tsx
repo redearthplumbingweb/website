@@ -7,15 +7,15 @@ type LogoProps = {
 };
 
 export function Logo({ className = "", size = "header" }: LogoProps) {
-  const height = size === "footer" ? "h-20" : "h-16";
+  const height = size === "footer" ? "h-14" : "h-12";
 
   return (
     <Image
-      src="/logo.png"
+      src="/redearth-plumbing-logo-whitebackground.png"
       alt={`${siteConfig.name} logo`}
-      width={160}
-      height={160}
-      className={`${height} w-auto ${className}`}
+      width={360}
+      height={140}
+      className={`${height} w-auto rounded-xl ${className}`}
       priority={size === "header"}
     />
   );

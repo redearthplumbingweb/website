@@ -67,9 +67,9 @@ export const defaultMetadata: Metadata = {
         alt: `${siteConfig.name} — licensed plumber and gas fitter in Batemans Bay`,
       },
       {
-        url: "/logo.png",
-        width: 512,
-        height: 512,
+        url: "/redearth-plumbing-logo-whitebackground.png",
+        width: 720,
+        height: 280,
         alt: `${siteConfig.name} logo`,
       },
     ],
@@ -105,8 +105,11 @@ export function getLocalBusinessSchema() {
     url: siteUrl,
     telephone: siteConfig.phoneHref.replace("tel:", ""),
     email: siteConfig.email,
-    image: [`${siteUrl}/hero-banner-logo.png`, `${siteUrl}/logo.png`],
-    logo: `${siteUrl}/logo.png`,
+    image: [
+      `${siteUrl}/hero-banner-logo.png`,
+      `${siteUrl}/redearth-plumbing-logo-whitebackground.png`,
+    ],
+    logo: `${siteUrl}/redearth-plumbing-logo-whitebackground.png`,
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",

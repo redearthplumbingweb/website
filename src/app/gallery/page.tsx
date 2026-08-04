@@ -4,7 +4,7 @@ import { Contact } from "@/components/Contact";
 import { Gallery } from "@/components/Gallery";
 import { PageHero } from "@/components/PageHero";
 import { GradientPhoneLink } from "@/components/GradientPhoneLink";
-import { newImages, siteConfig } from "@/lib/site-data";
+import { clientImages, siteConfig } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Project Gallery",
@@ -20,8 +20,8 @@ export default function GalleryPage() {
         eyebrow="Gallery"
         title="Real jobs across the South Coast"
         description="A look at residential plumbing, gas fitting, and drainage work completed for homes around Batemans Bay and beyond."
-        imageSrc={newImages.newHousePipes}
-        imageAlt="PVC plumbing pipes installed at a new home build"
+        imageSrc={clientImages.siteDrainageOverview}
+        imageAlt="Residential site drainage and retaining wall works overlooking bushland"
       />
       <Gallery />
 
