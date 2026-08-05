@@ -56,6 +56,10 @@ export function Contact() {
           </div>
         </div>
 
+        <p className="mt-6 text-center text-sm text-muted">
+          ABN {siteConfig.abnDisplay}
+        </p>
+
         <div className="mt-12">
           <GoogleMap />
         </div>

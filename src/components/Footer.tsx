@@ -31,6 +31,7 @@ export function Footer() {
                 {siteConfig.email}
               </a>
             </p>
+            <p>ABN {siteConfig.abnDisplay}</p>
           </address>
         </div>
 

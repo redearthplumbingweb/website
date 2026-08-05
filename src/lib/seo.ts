@@ -38,30 +38,28 @@ const defaultTitle =
 const defaultDescription =
   "Licensed plumber and gas fitter in Batemans Bay with 20+ years experience. New build plumbing, renovations, hot water, blocked drains and emergency call-outs across the Eurobodalla. Call 0423 764 630.";
 
-const defaultOgImage = {
+/** Brand logo used for all Open Graph / Twitter share cards */
+export const seoShareImage = {
   url: "/redearth-plumbing-logo-whitebackground.png",
-  width: 720,
-  height: 280,
+  width: 1200,
+  height: 630,
   alt: `${siteConfig.name} — licensed plumber and gas fitter in Batemans Bay`,
-};
+} as const;
 
 export function createPageMetadata({
   title,
   description,
   path,
-  image,
   keywords = [...seoKeywords],
 }: {
   title: string;
   description: string;
   path: string;
+  /** Kept for call-site compatibility; share cards always use the brand logo */
   image?: string;
   keywords?: string[];
 }): Metadata {
   const url = `${siteUrl}${path === "/" ? "" : path}`;
-  const ogImage = image
-    ? { url: image, width: 1200, height: 800, alt: title }
-    : defaultOgImage;
 
   return {
     title,
@@ -75,13 +73,13 @@ export function createPageMetadata({
       siteName: siteConfig.name,
       title,
       description,
-      images: [ogImage],
+      images: [seoShareImage],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [typeof ogImage.url === "string" ? ogImage.url : path],
+      images: [seoShareImage.url],
     },
   };
 }
@@ -119,13 +117,13 @@ export const defaultMetadata: Metadata = {
     siteName: siteConfig.name,
     title: defaultTitle,
     description: defaultDescription,
-    images: [defaultOgImage],
+    images: [seoShareImage],
   },
   twitter: {
     card: "summary_large_image",
     title: defaultTitle,
     description: defaultDescription,
-    images: [defaultOgImage.url],
+    images: [seoShareImage.url],
   },
   icons: {
     icon: [
@@ -152,6 +150,7 @@ export function getLocalBusinessSchema() {
     url: siteUrl,
     telephone: siteConfig.phoneHref.replace("tel:", ""),
     email: siteConfig.email,
+    taxID: siteConfig.abn,
     image: [
       `${siteUrl}/redearth-plumbing-logo-whitebackground.png`,
       `${siteUrl}/client-images/site-red-earth-truck.webp`,

@@ -60,6 +60,8 @@ export const siteConfig = {
   phoneHref: "tel:+61423764630",
   email: "redearthplumbing@hotmail.com",
   emailHref: "mailto:redearthplumbing@hotmail.com",
+  abn: "70770761240",
+  abnDisplay: "70 770 761 240",
   address: {
     street: "11 Canning Crescent",
     suburb: "Batemans Bay",
