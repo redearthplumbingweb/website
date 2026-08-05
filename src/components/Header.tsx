@@ -97,17 +97,16 @@ export function Header() {
           <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
             {navLinks.map((link) => {
               const active =
-                link.href === pathname ||
-                (link.href.startsWith("/#") && pathname === "/");
+                !link.href.startsWith("/#") &&
+                (pathname === link.href ||
+                  pathname.startsWith(`${link.href}/`));
 
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={`text-sm font-medium transition-colors duration-300 hover:text-primary ${
-                    active && !link.href.startsWith("/#")
-                      ? "text-primary"
-                      : "text-muted"
+                    active ? "text-primary" : "text-muted"
                   }`}
                 >
                   {link.label}
@@ -144,7 +143,7 @@ export function Header() {
       >
         <div className="overflow-hidden">
           <nav
-            className="border-b border-border px-6 pb-4 pt-16"
+            className="border-b border-border px-6 pb-4 pt-24"
             aria-label="Mobile navigation"
           >
             <div className="flex flex-col gap-1">

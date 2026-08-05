@@ -1,11 +1,13 @@
-import { getStructuredData } from "@/lib/seo";
+type JsonLdProps = {
+  data: Record<string, unknown> | Record<string, unknown>[];
+};
 
-export function JsonLd() {
-  const structuredData = getStructuredData();
+export function JsonLd({ data }: JsonLdProps) {
+  const schemas = Array.isArray(data) ? data : [data];
 
   return (
     <>
-      {structuredData.map((schema, index) => (
+      {schemas.map((schema, index) => (
         <script
           key={(schema["@id"] as string | undefined) ?? `schema-${index}`}
           type="application/ld+json"

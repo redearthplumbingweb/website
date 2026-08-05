@@ -1,31 +1,66 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Contact } from "@/components/Contact";
+import { Faq } from "@/components/Faq";
+import { JsonLd } from "@/components/JsonLd";
 import { PageHero } from "@/components/PageHero";
 import { Services } from "@/components/Services";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
 import { GradientPhoneLink } from "@/components/GradientPhoneLink";
 import { clientImages, siteConfig } from "@/lib/site-data";
+import {
+  createPageMetadata,
+  getBreadcrumbSchema,
+  getFaqSchema,
+  getWebPageSchema,
+} from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Plumbing & Gas Fitting Services",
-  description:
-    "New build plumbing, gas fitting, hot water systems, blocked drains, bathroom and kitchen renovations, and emergency plumbing across Batemans Bay and the Eurobodalla.",
-  alternates: { canonical: "/services" },
-};
+const title = "Plumbing & Gas Fitting Services in Batemans Bay";
+const description =
+  "Licensed plumbing and gas fitting services in Batemans Bay — new builds, hot water, blocked drains, bathrooms, emergency plumbing and more across the Eurobodalla. Call 0423 764 630.";
+
+export const metadata: Metadata = createPageMetadata({
+  title,
+  description,
+  path: "/services",
+  image: clientImages.siteRedEarthTruck,
+  keywords: [
+    "plumbing services Batemans Bay",
+    "gas fitting Batemans Bay",
+    "plumber Eurobodalla",
+    "hot water Batemans Bay",
+    "blocked drains Batemans Bay",
+  ],
+});
 
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd
+        data={[
+          getWebPageSchema({
+            path: "/services",
+            title,
+            description,
+            image: clientImages.siteRedEarthTruck,
+          }),
+          getBreadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Services", path: "/services" },
+          ]),
+          getFaqSchema(),
+        ]}
+      />
       <PageHero
         eyebrow="Services"
-        title="Plumbing & gas fitting done properly"
-        description="From new home builds to emergency call-outs — licensed, local service across Batemans Bay and the South Coast."
+        title="Plumbing & gas fitting in Batemans Bay"
+        description="Licensed local service for new builds, renovations, hot water, drains and emergency call-outs across the NSW South Coast."
         imageSrc={clientImages.siteRedEarthTruck}
         imageAlt="Red Earth Plumbing ute on an active construction site"
       />
       <Services />
       <WhyChooseUs />
+      <Faq />
 
       <section className="border-y border-border bg-background py-20">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-8 px-6 sm:flex-row sm:items-center sm:justify-between lg:px-8">
