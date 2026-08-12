@@ -1,4 +1,4 @@
-import { siteConfig, displayAddress } from "@/lib/site-data";
+import { siteConfig } from "@/lib/site-data";
 
 export function GoogleMap() {
   return (
@@ -12,7 +12,7 @@ export function GoogleMap() {
         allowFullScreen
       />
       <div className="flex flex-col gap-3 border-t border-border px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-muted">{displayAddress}</p>
+        <p className="text-sm text-muted">Batemans Bay, NSW</p>
         <a
           href={siteConfig.maps.link}
           target="_blank"

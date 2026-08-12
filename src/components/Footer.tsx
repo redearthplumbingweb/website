@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { navLinks, siteConfig, displayAddress } from "@/lib/site-data";
 
@@ -30,18 +31,19 @@ export function Footer() {
                 {siteConfig.email}
               </a>
             </p>
+            <p>ABN {siteConfig.abnDisplay}</p>
           </address>
         </div>
 
         <nav className="flex flex-wrap gap-x-8 gap-y-3" aria-label="Footer navigation">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="text-sm text-muted transition-colors hover:text-primary"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>

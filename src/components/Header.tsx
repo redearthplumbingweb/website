@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
 import { navLinks, siteConfig } from "@/lib/site-data";
@@ -23,20 +25,29 @@ function MenuIcon({ open }: { open: boolean }) {
 }
 
 export function Header() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const [open, setOpen] = useState(false);
-  const [pastHero, setPastHero] = useState(false);
+  const [pastHero, setPastHero] = useState(!isHome);
 
   useEffect(() => {
+    setOpen(false);
+
+    if (!isHome) {
+      setPastHero(true);
+      return;
+    }
+
     const hero = document.getElementById("hero");
-    if (!hero) return;
+    if (!hero) {
+      setPastHero(true);
+      return;
+    }
 
     const updateVisibility = () => {
       const isPastHero = hero.getBoundingClientRect().bottom <= 0;
-
       setPastHero((previous) => {
-        if (isPastHero && !previous) {
-          setOpen(false);
-        }
+        if (isPastHero && !previous) setOpen(false);
         return isPastHero;
       });
     };
@@ -49,25 +60,27 @@ export function Header() {
       window.removeEventListener("scroll", updateVisibility);
       window.removeEventListener("resize", updateVisibility);
     };
-  }, []);
+  }, [isHome, pathname]);
 
   return (
     <>
-      <button
-        type="button"
-        className={`fixed top-4 right-4 z-50 inline-flex items-center justify-center rounded-full border border-white/25 bg-black/20 p-2.5 text-white backdrop-blur-sm transition-all duration-300 active:scale-95 md:hidden ${
-          pastHero
-            ? "pointer-events-none translate-y-2 opacity-0"
-            : "translate-y-0 opacity-100"
-        }`}
-        aria-expanded={open}
-        aria-controls="mobile-menu"
-        aria-label="Toggle menu"
-        onClick={() => setOpen((value) => !value)}
-      >
-        <span className="sr-only">Open menu</span>
-        <MenuIcon open={open} />
-      </button>
+      {isHome ? (
+        <button
+          type="button"
+          className={`fixed top-4 right-4 z-50 inline-flex items-center justify-center rounded-full border border-white/25 bg-black/20 p-2.5 text-white backdrop-blur-sm transition-all duration-300 active:scale-95 md:hidden ${
+            pastHero
+              ? "pointer-events-none translate-y-2 opacity-0"
+              : "translate-y-0 opacity-100"
+          }`}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label="Toggle menu"
+          onClick={() => setOpen((value) => !value)}
+        >
+          <span className="sr-only">Open menu</span>
+          <MenuIcon open={open} />
+        </button>
+      ) : null}
 
       <header
         className={`fixed inset-x-0 top-0 z-50 border-b border-border/80 bg-white/95 shadow-sm backdrop-blur-md transition-all duration-500 ease-in-out ${
@@ -77,23 +90,32 @@ export function Header() {
         }`}
       >
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
-          <a href="#" aria-label={`${siteConfig.name} home`}>
+          <Link href="/" aria-label={`${siteConfig.name} home`}>
             <Logo />
-          </a>
+          </Link>
 
           <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium text-muted transition-colors duration-300 hover:text-primary"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const active =
+                !link.href.startsWith("/#") &&
+                (pathname === link.href ||
+                  pathname.startsWith(`${link.href}/`));
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors duration-300 hover:text-primary ${
+                    active ? "text-primary" : "text-muted"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             <a
               href={siteConfig.phoneHref}
-              className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-primary-dark"
+              className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-primary-dark hover:shadow-md"
             >
               {siteConfig.phone}
             </a>
@@ -121,24 +143,22 @@ export function Header() {
       >
         <div className="overflow-hidden">
           <nav
-            className="border-b border-border px-6 pb-4 pt-16"
+            className="border-b border-border px-6 pb-4 pt-24"
             aria-label="Mobile navigation"
           >
             <div className="flex flex-col gap-1">
               {navLinks.map((link, index) => (
-                <a
+                <Link
                   key={link.href}
                   href={link.href}
                   className={`rounded-lg px-3 py-3 text-base font-medium text-foreground transition-all duration-300 hover:bg-surface hover:text-primary ${
-                    open
-                      ? "translate-y-0 opacity-100"
-                      : "-translate-y-2 opacity-0"
+                    open ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
                   }`}
                   style={{ transitionDelay: open ? `${index * 60 + 80}ms` : "0ms" }}
                   onClick={() => setOpen(false)}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               <div
                 className={`pt-2 transition-all duration-300 ${

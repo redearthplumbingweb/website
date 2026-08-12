@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { services, siteConfig } from "@/lib/site-data";
+import {
+  faqs,
+  serviceAreas,
+  services,
+  siteConfig,
+  type Service,
+} from "@/lib/site-data";
 
 export const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.redearthplumbing.com.au";
@@ -17,8 +23,14 @@ export const seoKeywords = [
   "licensed plumber NSW South Coast",
   "plumber Batehaven",
   "plumber Surfside",
+  "plumber Catalina",
+  "plumber Malua Bay",
+  "plumber Long Beach",
+  "plumber Tomakin",
+  "plumber Broulee",
   "gas fitting Sunshine Bay",
   "plumbing renovations Batemans Bay",
+  "Eurobodalla plumber",
 ] as const;
 
 const defaultTitle =
@@ -26,11 +38,57 @@ const defaultTitle =
 const defaultDescription =
   "Licensed plumber and gas fitter in Batemans Bay with 20+ years experience. New build plumbing, renovations, hot water, blocked drains and emergency call-outs across the Eurobodalla. Call 0423 764 630.";
 
+/** Brand logo used for all Open Graph / Twitter share cards */
+export const seoShareImage = {
+  url: "/redearth-plumbing-logo-whitebackground.png",
+  width: 1200,
+  height: 630,
+  alt: `${siteConfig.name} — licensed plumber and gas fitter in Batemans Bay`,
+} as const;
+
+export function createPageMetadata({
+  title,
+  description,
+  path,
+  keywords = [...seoKeywords],
+}: {
+  title: string;
+  description: string;
+  path: string;
+  /** Kept for call-site compatibility; share cards always use the brand logo */
+  image?: string;
+  keywords?: string[];
+}): Metadata {
+  const url = `${siteUrl}${path === "/" ? "" : path}`;
+
+  return {
+    title,
+    description,
+    keywords,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "website",
+      locale: "en_AU",
+      url,
+      siteName: siteConfig.name,
+      title,
+      description,
+      images: [seoShareImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [seoShareImage.url],
+    },
+  };
+}
+
 export const defaultMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: defaultTitle,
-    template: "%s | Red Earth Plumbing",
+    template: "%s",
   },
   description: defaultDescription,
   keywords: [...seoKeywords],
@@ -59,26 +117,13 @@ export const defaultMetadata: Metadata = {
     siteName: siteConfig.name,
     title: defaultTitle,
     description: defaultDescription,
-    images: [
-      {
-        url: "/hero-banner-logo.png",
-        width: 1600,
-        height: 400,
-        alt: `${siteConfig.name} — licensed plumber and gas fitter in Batemans Bay`,
-      },
-      {
-        url: "/logo.png",
-        width: 512,
-        height: 512,
-        alt: `${siteConfig.name} logo`,
-      },
-    ],
+    images: [seoShareImage],
   },
   twitter: {
     card: "summary_large_image",
     title: defaultTitle,
     description: defaultDescription,
-    images: ["/hero-banner-logo.png"],
+    images: [seoShareImage.url],
   },
   icons: {
     icon: [
@@ -98,15 +143,19 @@ export const defaultMetadata: Metadata = {
 export function getLocalBusinessSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": ["Plumber", "LocalBusiness"],
+    "@type": ["Plumber", "LocalBusiness", "HomeAndConstructionBusiness"],
     "@id": `${siteUrl}/#business`,
     name: siteConfig.name,
     description: siteConfig.description,
     url: siteUrl,
     telephone: siteConfig.phoneHref.replace("tel:", ""),
     email: siteConfig.email,
-    image: [`${siteUrl}/hero-banner-logo.png`, `${siteUrl}/logo.png`],
-    logo: `${siteUrl}/logo.png`,
+    taxID: siteConfig.abn,
+    image: [
+      `${siteUrl}/redearth-plumbing-logo-whitebackground.png`,
+      `${siteUrl}/client-images/site-red-earth-truck.webp`,
+    ],
+    logo: `${siteUrl}/redearth-plumbing-logo-whitebackground.png`,
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",
@@ -121,26 +170,23 @@ export function getLocalBusinessSchema() {
       latitude: -35.706,
       longitude: 150.175,
     },
-    areaServed: [
-      { "@type": "City", name: "Batemans Bay" },
-      { "@type": "City", name: "Sunshine Bay" },
-      { "@type": "City", name: "Batehaven" },
-      { "@type": "City", name: "Surfside" },
-      {
-        "@type": "AdministrativeArea",
-        name: "Eurobodalla Shire",
-      },
-    ],
+    areaServed: serviceAreas.map((area) => ({
+      "@type": "City",
+      name: area.name,
+    })),
+    knowsAbout: services.map((service) => service.title),
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Plumbing & Gas Fitting Services",
       itemListElement: services.map((service, index) => ({
         "@type": "Offer",
         position: index + 1,
+        url: `${siteUrl}/services/${service.slug}`,
         itemOffered: {
           "@type": "Service",
           name: service.title,
           description: service.description,
+          url: `${siteUrl}/services/${service.slug}`,
           areaServed: siteConfig.serviceArea,
           provider: {
             "@id": `${siteUrl}/#business`,
@@ -167,14 +213,26 @@ export function getWebSiteSchema() {
   };
 }
 
-export function getWebPageSchema() {
+export function getWebPageSchema({
+  path,
+  title,
+  description,
+  image,
+}: {
+  path: string;
+  title: string;
+  description: string;
+  image?: string;
+}) {
+  const url = `${siteUrl}${path === "/" ? "" : path}`;
+
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": `${siteUrl}/#webpage`,
-    url: siteUrl,
-    name: defaultTitle,
-    description: defaultDescription,
+    "@id": `${url}#webpage`,
+    url,
+    name: title,
+    description,
     isPartOf: {
       "@id": `${siteUrl}/#website`,
     },
@@ -184,13 +242,74 @@ export function getWebPageSchema() {
     inLanguage: "en-AU",
     primaryImageOfPage: {
       "@type": "ImageObject",
-      url: `${siteUrl}/hero-banner-logo.png`,
+      url: `${siteUrl}${image ?? "/redearth-plumbing-logo-whitebackground.png"}`,
     },
   };
 }
 
-export function getStructuredData() {
-  return [getLocalBusinessSchema(), getWebSiteSchema(), getWebPageSchema()];
+export function getBreadcrumbSchema(
+  items: { name: string; path: string }[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: `${siteUrl}${item.path === "/" ? "" : item.path}`,
+    })),
+  };
+}
+
+export function getFaqSchema(items = faqs) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+export function getServiceSchema(service: Service) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.intro,
+    url: `${siteUrl}/services/${service.slug}`,
+    image: `${siteUrl}${service.image.src}`,
+    provider: {
+      "@id": `${siteUrl}/#business`,
+    },
+    areaServed: serviceAreas.map((area) => ({
+      "@type": "City",
+      name: area.name,
+    })),
+    serviceType: service.title,
+  };
+}
+
+export function getSiteWideStructuredData() {
+  return [getLocalBusinessSchema(), getWebSiteSchema()];
+}
+
+export function getHomeStructuredData() {
+  return [
+    getWebPageSchema({
+      path: "/",
+      title: defaultTitle,
+      description: defaultDescription,
+      image: "/client-images/bathroom-ensuite-bay-view.webp",
+    }),
+    getFaqSchema(),
+  ];
 }
 
 export { defaultTitle, defaultDescription };

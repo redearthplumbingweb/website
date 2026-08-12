@@ -57,6 +57,14 @@ export function About() {
                 {siteConfig.yearsExperience}+ years in plumbing &amp; gas fitting
               </dd>
             </div>
+            <div className="rounded-2xl border border-border bg-surface p-6">
+              <dt className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                ABN
+              </dt>
+              <dd className="mt-2 text-base text-foreground">
+                {siteConfig.abnDisplay}
+              </dd>
+            </div>
             <div className="rounded-2xl border border-border bg-surface p-6 sm:col-span-2">
               <dt className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
                 Service Area
